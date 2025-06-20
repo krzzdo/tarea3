@@ -25,7 +25,8 @@ pesoIdealAltura :-
     read(Altura),
     write('Ingrese sexo (hombre/mujer): '),
     read(Sexo),
-    write('RESULTADO:').
+    calculoPesoIdeal(Altura, Sexo, PesoIdeal),
+    write('Su peso ideal esta entre '), write(PesoIdeal), nl.
 
 % prints imc tradicional y toma de valores.
 imcTradicional :-
@@ -47,4 +48,55 @@ imcEdadSexo :-
     read(Edad),
     write('Ingrese sexo (hombre/mujer): '),
     read(Sexo),
-    write('RESULTADO').
+    write(Resultado).
+
+
+% calculos para peso ideal: 
+    % MUJER
+calculoPesoIdeal(Altura, 'mujer', PesoIdeal) :-
+    (Altura >= 144, Altura =< 147-> PesoIdeal = '49-55 kg.';
+    Altura >= 148, Altura =< 150-> PesoIdeal = '50-56 kg.';
+    Altura >= 150, Altura =< 152-> PesoIdeal = '51-57 kg.';
+    Altura >= 153, Altura =< 155-> PesoIdeal = '52-59 kg.';
+    Altura >= 156, Altura =< 157-> PesoIdeal = '54-60 kg.';
+    Altura >= 159, Altura =< 160-> PesoIdeal = '55-61 kg.';
+    Altura >= 161, Altura =< 163-> PesoIdeal = '56-63 kg.';
+    Altura >= 164, Altura =< 165-> PesoIdeal = '58-64 kg.';
+    Altura >= 166, Altura =< 168-> PesoIdeal = '59-65 kg.';
+    Altura >= 169, Altura =< 170-> PesoIdeal = '60-67 kg.';
+    Altura >= 171, Altura =< 173-> PesoIdeal = '62-68 kg.';
+    Altura >= 174, Altura =< 175-> PesoIdeal = '63-70 kg.';
+    Altura >= 176, Altura =< 178-> PesoIdeal = '64-71 kg.';
+    Altura >= 179, Altura =< 180-> PesoIdeal = '66-72 kg.';
+    Altura >= 181, Altura =< 183-> PesoIdeal = '68-74 kg.';
+    PesoIdeal = 'Rango indefinido').
+
+    % HOMBRE
+calculoPesoIdeal(Altura, 'hombre', PesoIdeal) :-
+    (Altura >= 156, Altura =< 157-> PesoIdeal = '59-64 kg.';
+    Altura >= 158, Altura =< 160-> PesoIdeal = '60-65 kg.';
+    Altura >= 161, Altura =< 163-> PesoIdeal = '61-66 kg.';
+    Altura >= 164, Altura =< 165-> PesoIdeal = '62-67 kg.';
+    Altura >= 166, Altura =< 168-> PesoIdeal = '63-68 kg.';
+    Altura >= 169, Altura =< 170-> PesoIdeal = '64-71 kg.';
+    Altura >= 171, Altura =< 173-> PesoIdeal = '66-71 kg.';
+    Altura >= 174, Altura =< 175-> PesoIdeal = '66-73 kg.';
+    Altura >= 176, Altura =< 178-> PesoIdeal = '68-74 kg.';
+    Altura >= 179, Altura =< 180-> PesoIdeal = '69-75 kg.';
+    Altura >= 181, Altura =< 183-> PesoIdeal = '70-77 kg.';
+    Altura >= 184, Altura =< 185-> PesoIdeal = '72-79 kg.';
+    Altura >= 185, Altura =< 187-> PesoIdeal = '74-81 kg.';
+    Altura >= 187, Altura =< 189-> PesoIdeal = '75-83 kg.';
+    Altura >= 190, Altura =< 191-> PesoIdeal = '77-85 kg.';
+    PesoIdeal = 'Rango indefinido').
+
+
+
+% Calculos por IMC Tradicional
+calculoImcTradicional :-
+    calculoImcTradicional. 
+
+
+calculoImcEdadSexo :-
+    calculoImcEdadSexo.
+
