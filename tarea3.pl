@@ -18,6 +18,9 @@ menu :-
      Opcion == 4 -> write('Saliendo del programa... ¡Hasta pronto!'), !, fail;
      write('Opcion invalida. Intente de nuevo'), nl, fail).
 
+
+% --------------------------------------------------------------------
+
 % prints y tomas de valores de peso ideal por altura.
 pesoIdealAltura :-
     nl, write('--- PESO IDEAL POR ALTURA ---'), nl,
@@ -27,29 +30,6 @@ pesoIdealAltura :-
     read(Sexo),
     calculoPesoIdeal(Altura, Sexo, PesoIdeal),
     write('Su peso ideal esta entre '), write(PesoIdeal), nl.
-
-% prints imc tradicional y toma de valores.
-imcTradicional :-
-    nl, write('--- IMC TRADICIONAL ---'), nl,
-    write('Ingrese peso en kg: '),
-    read(PesoKG),
-    write('Ingrese altura en cm: '),
-    read(Altura),
-    write('RESULTADO').
-
-% prints de imc por edad y sexo, y toma de valores
-imcEdadSexo :-
-    nl, write('--- IMC POR EDAD Y SEXO ---'), nl,
-    write('Ingrese peso en kg: '),
-    read(PesoKG),
-    write('Ingrese altura en cm: '),
-    read(Altura),
-    write('Ingrese edad (2-100): '),
-    read(Edad),
-    write('Ingrese sexo (hombre/mujer): '),
-    read(Sexo),
-    write(Resultado).
-
 
 % calculos para peso ideal: 
     % MUJER
@@ -90,13 +70,112 @@ calculoPesoIdeal(Altura, 'hombre', PesoIdeal) :-
     Altura >= 190, Altura =< 191-> PesoIdeal = '77-85 kg.';
     PesoIdeal = 'Rango indefinido').
 
+% --------------------------------------------------------------------
+
+% prints imc tradicional y toma de valores.
+imcTradicional :-
+    nl, write('--- IMC TRADICIONAL ---'), nl,
+    write('Ingrese peso en kg: '),
+    read(PesoKG),
+    write('Ingrese altura en cm: '),
+    read(Altura),
+    calculoImc(Altura, PesoKG, IMCT),
+    imcTResultado(IMCT, ResultadoIMCT),
+    write('IMC: '), write(IMCT), write(ResultadoIMCT).
 
 
-% Calculos por IMC Tradicional
-calculoImcTradicional :-
-    calculoImcTradicional. 
+    % Resultados según IMC Tradicional
+imcTResultado(IMCT, ResultadoIMCT) :-
+    (IMCT =< 18.4 -> ResultadoIMCT = ' - Bajo peso,';
+    IMCT >= 18.5, IMCT =< 24.9 -> ResultadoIMCT = ' - Peso normal';
+    IMCT >= 25, IMCT =< 29.9 -> ResultadoIMCT = ' - Sobrepeso';
+    IMCT < 30 -> ResultadoIMCT = ' - Obesidad').
+    
+% --------------------------------------------------------------------
+calculoImc(Altura, PesoKG, IMCT) :-
+    IMC is PesoKG/((Altura/100)**2),
+    IMCT is round(IMC*100)/100.
+% --------------------------------------------------------------------
+% prints de imc por edad y sexo, y toma de valores
+imcEdadSexo :-
+    nl, write('--- IMC POR EDAD Y SEXO ---'), nl,
+    write('Ingrese peso en kg: '),
+    read(PesoKG),
+    write('Ingrese altura en cm: '),
+    read(Altura),
+    write('Ingrese edad (2-100): '),
+    read(Edad),
+    write('Ingrese sexo (hombre/mujer): '),
+    read(Sexo),
+    calculoImc(Altura, PesoKG, IMCT),
+    write('IMC: '), write(IMCT), write('. Rango ideal para su edad y sexo: '), rangoIdeal(Edad, RangoIdeal), rangoIdealMujer(Edad, Sexo, RangoIdeal), rangoIdealHombre(Edad, Sexo, RangoIdeal), nl,
+    write('Evaluacion: '), imcESResultado(IMCT, Edad, Sexo).
+%KG: 68
+%ALTURA: 170
+%EDAD: 35
+%SEXO: MUJER
+% RESULTADO DEBE SER:
+% IMC: 23.53 (RANGO IDEAL PARA SU EDAD Y SEXO: 18.5-24.9)
+% EVALUACION: PESO NORMAL PARA SU EDAD Y SEXO.
+
+% prints de los rangos ideales de cada edad, valores unisex, valores hombre y mujer
+
+rangoIdeal(Edad, RangoIdeal) :-
+    (Edad == 2 -> RangoIdeal = '14.4-18.0';
+    Edad == 3 -> RangoIdeal = '14.0-17.6';
+    Edad == 4 -> RangoIdeal = '13.8-17.4';
+    Edad == 5 -> RangoIdeal = '13.6-17.2';
+    Edad == 6 -> RangoIdeal = '13.5-17.2';
+    Edad == 7 -> RangoIdeal = '13.4-17.4';
+    Edad == 8 -> RangoIdeal = '13.5-17.8';
+    Edad == 9 -> RangoIdeal = '13.8-18.4';
+    Edad == 10 -> RangoIdeal = '14.2-19.0';
+    Edad == 11 -> RangoIdeal = '14.6-19.6';
+    Edad == 12 -> RangoIdeal = '15.2-20.3';
+    Edad == 13 -> RangoIdeal = '15.8-21.0';
+    Edad == 14 -> RangoIdeal = '16.4-21.8';
+    Edad == 15 -> RangoIdeal = '17.0-22.5';
+    Edad == 16 -> RangoIdeal = '17.6-23.2';
+    Edad == 17 -> RangoIdeal = '18.1-23.8';
+    Edad == 18 -> RangoIdeal = '18.5-24.3';
+    Edad == 19 -> RangoIdeal = '18.8-24.7';
+    Edad == 20 -> RangoIdeal = '19.0-25.0').
+
+rangoIdealMujer(Edad,'mujer', RangoIdeal) :-
+    (Edad >= 21, Edad =< 39 -> RangoIdeal = '18.5-24.9';
+    Edad >= 40, Edad =< 64 -> RangoIdeal = '19.0-26.0';
+    Edad >= 65, Edad =< 100 -> RangoIdeal = '20.0-27.0';
+    RangoIdeal = 'Rango de edad no definido.').
+
+rangoIdealHombre(Edad, 'hombre', RangoIdeal):-
+    (Edad >= 21, Edad =< 39 -> RangoIdeal = '20.0-25.0';
+    Edad >= 40, Edad =< 64 -> RangoIdeal = '21.0-27.0';
+    Edad >= 65, Edad =< 100 -> RangoIdeal = '22.0-28.0';
+    RangoIdeal = 'Rango de edad no definido.').
 
 
-calculoImcEdadSexo :-
-    calculoImcEdadSexo.
+% Calculo de la evaluación 
+
+
+imcESResultado(IMCT, Edad, Sexo, ResultadoIMCES) :-
+    (
+)
+
+
+imcESResultado(IMCT, Edad, 'hombre', ResultadoIMCES) :-
+    (Edad == 2, IMCT >= 14.4, IMCT =< 18 -> ResultadoIMCES = 'Evaluacion: ';
+        )
+imcESResultado(IMCT, 'mujer') :-
+    (
+        )
+
+
+
+% -------------------------------------------------------------------
+
+% --------------------------------------------------------------------
+
+
+
+
 
