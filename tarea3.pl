@@ -1,33 +1,33 @@
 % prints del menu
 menu :-
-    repeat, % inicia un bucle infinito
+    repeat,
     nl, write('--- SISTEMA NUTRICIONAL ---'), nl,
     write('1. Calcular peso ideal por altura'), nl,
     write('2. Calcular IMC tradicional'), nl,
     write('3. Calcular IMC por edad y sexo'), nl,
     write('4. Salir'), nl,
-    read(Opcion), % Aquí está el input del usuario, 
-    (Opcion == 1 -> pesoIdealAltura, fail;  % el -> es como un if, si se cumple lo de la izquierda, pasa lo de la derecha
-     Opcion == 2 -> imcTradicional, fail;   % el ; es el símil a un or, va de opción en opción
-     Opcion == 3 -> imcEdadSexo, fail;  % el fail hace que el bucle se repita después de ejecutar la opcion
-     Opcion == 4 -> write('Saliendo del programa... ¡Hasta pronto!'), !; % el ! es para cortar el programa. símil al break.
-     write('Opcion invalida. Intente de nuevo'), nl, fail). % si no toma ninguna de las opciones disponibles, se imprime este write
+    read(Opcion),
+    (Opcion == 1 -> pesoIdealAltura, fail;
+     Opcion == 2 -> imcTradicional, fail; 
+     Opcion == 3 -> imcEdadSexo, fail;  
+     Opcion == 4 -> write('Saliendo del programa... ¡Hasta pronto!'), !;
+     write('Opcion invalida. Intente de nuevo'), nl, fail). 
 
 
 % -------------------------------------------------------------------- 
 
 % prints y tomas de valores de peso ideal por altura.
 pesoIdealAltura :-
-    nl, write('--- PESO IDEAL POR ALTURA ---'), nl, % se pide el ingreso de la altura en cm y el sexo (hombre/mujer)
+    nl, write('--- PESO IDEAL POR ALTURA ---'), nl, 
     write('Ingrese altura en cm (144-191): '), read(Altura),
     write('Ingrese sexo (hombre/mujer): '), read(Sexo),
-    calculoPesoIdeal(Altura, Sexo, PesoIdeal), % llama a calculoPesoIdeal pasando los valores ingresados. y con la salida.
+    calculoPesoIdeal(Altura, Sexo, PesoIdeal), 
     write('Su peso ideal esta entre '), write(PesoIdeal), nl.
 
 % calculos para peso ideal: 
     % MUJER
-calculoPesoIdeal(Altura, 'mujer', PesoIdeal) :- % se calcula peso ideal solamente para mujer
-    (Altura >= 144, Altura =< 147-> PesoIdeal = '49-55 kg.';  % se calcula con condicionales encadenadas con -> y ;
+calculoPesoIdeal(Altura, 'mujer', PesoIdeal) :- 
+    (Altura >= 144, Altura =< 147-> PesoIdeal = '49-55 kg.'; 
     Altura >= 148, Altura =< 150-> PesoIdeal = '50-56 kg.';
     Altura >= 150, Altura =< 152-> PesoIdeal = '51-57 kg.';
     Altura >= 153, Altura =< 155-> PesoIdeal = '52-59 kg.';
@@ -45,7 +45,7 @@ calculoPesoIdeal(Altura, 'mujer', PesoIdeal) :- % se calcula peso ideal solament
     PesoIdeal = 'Rango indefinido').
 
     % HOMBRE
-calculoPesoIdeal(Altura, 'hombre', PesoIdeal) :- % se calcula peso ideal solamente para hombre
+calculoPesoIdeal(Altura, 'hombre', PesoIdeal) :-
     (Altura >= 156, Altura =< 157-> PesoIdeal = '59-64 kg.';
     Altura >= 158, Altura =< 160-> PesoIdeal = '60-65 kg.';
     Altura >= 161, Altura =< 163-> PesoIdeal = '61-66 kg.';
@@ -67,44 +67,44 @@ calculoPesoIdeal(Altura, 'hombre', PesoIdeal) :- % se calcula peso ideal solamen
 
 % prints imc tradicional y toma de valores.
 imcTradicional :-
-    nl, write('--- IMC TRADICIONAL ---'), nl, % le pide al usuario el peso en kg y la altura en cm para calcular el imc de manera tradicional
+    nl, write('--- IMC TRADICIONAL ---'), nl,
     write('Ingrese peso en kg: '), read(PesoKG),
     write('Ingrese altura en cm: '), read(Altura),
-    calculoImc(Altura, PesoKG, IMCT), % llama a calculoImc con la altura y peso, devolviendo IMCT que es el calculo de el IMC
-    imcTResultado(IMCT, ResultadoIMCT), % llama a imcTResultado con el IMC calculado y devolviendo el resultado
+    calculoImc(Altura, PesoKG, IMCT), 
+    imcTResultado(IMCT, ResultadoIMCT),
     write('IMC: '), write(IMCT), write(ResultadoIMCT), nl.
 
 
     % Resultados según IMC Tradicional
-imcTResultado(IMCT, ResultadoIMCT) :-  % toma el IMC calculado y devuelve lo que significa el imc según el peso y la altura
+imcTResultado(IMCT, ResultadoIMCT) :- 
     (IMCT =< 18.4 -> ResultadoIMCT = ' - Bajo peso,';
     IMCT >= 18.5, IMCT =< 24.9 -> ResultadoIMCT = ' - Peso normal';
     IMCT >= 25, IMCT =< 29.9 -> ResultadoIMCT = ' - Sobrepeso';
     IMCT >= 30 -> ResultadoIMCT = ' - Obesidad').
     
 % --------------------------------------------------------------------
-calculoImc(Altura, PesoKG, IMCT) :- % calcula el IMC con solo 2 dígitos después de la coma.
+calculoImc(Altura, PesoKG, IMCT) :-
     IMC is PesoKG/((Altura/100)**2),
-    IMCT is round(IMC*100)/100. % multiplica el resultado por 100, quita los decimales y lo divide por 100 de nuevo.
+    IMCT is round(IMC*100)/100. 
 % --------------------------------------------------------------------
 % prints de imc por edad y sexo, y toma de valores
 imcEdadSexo :-
-    nl, write('--- IMC POR EDAD Y SEXO ---'), nl, % le pide al usuario el peso, la altura, la edad y el sexo.
+    nl, write('--- IMC POR EDAD Y SEXO ---'), nl, 
     write('Ingrese peso en kg: '), read(PesoKG),
     write('Ingrese altura en cm: '), read(Altura),
     write('Ingrese edad (2-100): '), read(Edad),
     write('Ingrese sexo (hombre/mujer): '), read(Sexo),
-    calculoImc(Altura, PesoKG, IMCT), % Obtiene el IMC redondeado. 
-    write('IMC: '), write(IMCT), %muestra el valor del imc
-    (Edad =< 20 -> rangoIdeal(Edad, RangoIdeal); % toma el rango ideal neutro para menores de 21
-     Sexo == mujer -> rangoIdealMujer(Edad, Sexo, RangoIdeal); % si es mujer toma el rango ideal dependiendo de la edad
-     Sexo == hombre -> rangoIdealHombre(Edad, Sexo, RangoIdeal)), % si es hombre toma el rango ideal dependiendo de la edad
-    write(' (Rango ideal para su edad y sexo: '), write(RangoIdeal), write(')'), nl, %  imprime el rango ideal obtenido
+    calculoImc(Altura, PesoKG, IMCT), 
+    write('IMC: '), write(IMCT),
+    (Edad =< 20 -> rangoIdeal(Edad, RangoIdeal); 
+     Sexo == mujer -> rangoIdealMujer(Edad, Sexo, RangoIdeal); 
+     Sexo == hombre -> rangoIdealHombre(Edad, Sexo, RangoIdeal)), 
+    write(' (Rango ideal para su edad y sexo: '), write(RangoIdeal), write(')'), nl,
     imcESResultado(IMCT, Edad, Sexo, Resultado), write('Evaluacion: '), write(Resultado), nl. 
 
 % prints de los rangos ideales de cada edad, valores unisex, valores hombre y mujer
 
-rangoIdeal(Edad, RangoIdeal) :- % definicion de rango ideal para menores de 21 años
+rangoIdeal(Edad, RangoIdeal) :-
     (Edad == 2-> RangoIdeal = '14.4-18.0';
     Edad == 3-> RangoIdeal = '14.0-17.6';
     Edad == 4-> RangoIdeal = '13.8-17.4';
@@ -125,13 +125,13 @@ rangoIdeal(Edad, RangoIdeal) :- % definicion de rango ideal para menores de 21 a
     Edad == 19-> RangoIdeal = '18.8-24.7';
     Edad == 20-> RangoIdeal = '19.0-25.0').
 
-rangoIdealMujer(Edad,'mujer', RangoIdeal) :- % definicion de rango ideal para mujeres mayores de 20
+rangoIdealMujer(Edad,'mujer', RangoIdeal) :-
     (Edad >= 21, Edad =< 39 -> RangoIdeal = '18.5-24.9';
     Edad >= 40, Edad =< 64 -> RangoIdeal = '19.0-26.0';
     Edad >= 65, Edad =< 100 -> RangoIdeal = '20.0-27.0';
     RangoIdeal = 'Rango de edad no definido.').
 
-rangoIdealHombre(Edad, 'hombre', RangoIdeal):- % definicion de rango ideal para hombres mayores de 20
+rangoIdealHombre(Edad, 'hombre', RangoIdeal):-
     (Edad >= 21, Edad =< 39 -> RangoIdeal = '20.0-25.0';
     Edad >= 40, Edad =< 64 -> RangoIdeal = '21.0-27.0';
     Edad >= 65, Edad =< 100 -> RangoIdeal = '22.0-28.0';
@@ -140,7 +140,7 @@ rangoIdealHombre(Edad, 'hombre', RangoIdeal):- % definicion de rango ideal para 
 
 % Calculo de la evaluación 
     % Rangos para evaluar 
-limitesIMC(Edad, Sexo, Min, Max) :- % define los limites de los rangos ideales para calcularlos en imcESResultado
+limitesIMC(Edad, Sexo, Min, Max) :- 
     % Unisex
     (Edad == 2-> Min = 14.4, Max = 18.0;
      Edad == 3-> Min = 14.0, Max = 17.6;
@@ -169,13 +169,13 @@ limitesIMC(Edad, Sexo, Min, Max) :- % define los limites de los rangos ideales p
      Sexo == hombre, Edad >= 21, Edad =< 39 -> Min = 20.0, Max = 25.0;
      Sexo == hombre, Edad >= 40, Edad =< 64 -> Min = 21.0, Max = 27.0;
      Sexo == hombre, Edad >= 65, Edad =< 100 -> Min = 22.0, Max = 28.0;
-     Min = 0, Max = 0). % define estos valores para rangos indefinidos
+     Min = 0, Max = 0).
 
 
 
-imcESResultado(IMC, Edad, Sexo, ResultadoIMC) :- % evalua el imc entregado con limitesIMC
+imcESResultado(IMC, Edad, Sexo, ResultadoIMC) :- 
     limitesIMC(Edad, Sexo, Min, Max),
-    (Min =:= 0, Max =:= 0-> ResultadoIMC = 'Rango de edad no definido.'; % =:= compara resultados numericos
+    (Min =:= 0, Max =:= 0-> ResultadoIMC = 'Rango de edad no definido.'; 
      IMC < Min-> ResultadoIMC = 'Bajo peso para su edad y sexo.';
      IMC =< Max-> ResultadoIMC = 'Peso normal para su edad y sexo.';
      IMC > Max-> ResultadoIMC = 'Sobrepeso para su edad y sexo.').
